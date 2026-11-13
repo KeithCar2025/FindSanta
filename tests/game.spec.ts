@@ -1,5 +1,58 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
+test("homepage preserves artwork and changes composition with screen orientation", async ({
+  page,
+}) => {
+  await page.goto("/");
+  for (const size of [
+    { width: 1440, height: 900 },
+    { width: 1366, height: 768 },
+    { width: 768, height: 1024 },
+    { width: 390, height: 844 },
+    { width: 375, height: 667 },
+  ]) {
+    await page.setViewportSize(size);
+    const art = page.locator(".home-backdrop");
+    await expect
+      .poll(() => art.evaluate((img: HTMLImageElement) => img.currentSrc))
+      .toContain(
+        size.width <= size.height
+          ? "christmas-search-portrait.png"
+          : "christmas-search.png",
+      );
+    await art.evaluate((img: HTMLImageElement) => img.decode());
+    const details = await art.evaluate((img: HTMLImageElement) => ({
+      src: img.currentSrc,
+      fit: getComputedStyle(img).objectFit,
+      width: img.naturalWidth,
+      height: img.naturalHeight,
+    }));
+    expect(details.fit).toBe("contain");
+    expect(
+      details.src.endsWith(
+        size.width <= size.height
+          ? "christmas-search-portrait.png"
+          : "christmas-search.png",
+      ),
+    ).toBe(true);
+    expect(
+      size.width <= size.height
+        ? details.height > details.width
+        : details.width > details.height,
+    ).toBe(true);
+    const button = (await page
+      .getByRole("button", { name: "BEGIN THE SEARCH" })
+      .boundingBox())!;
+    expect(button.y).toBeGreaterThanOrEqual(0);
+    expect(button.y + button.height).toBeLessThanOrEqual(size.height);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBe(size.width);
+    await page.screenshot({
+      path: `test-results/home-responsive-${size.width}.png`,
+    });
+  }
+});
 const scenes = JSON.parse(fs.readFileSync("src/scenes.json", "utf8"));
 const ids = ["santa", "reindeer", "tag", "dkv"];
 async function begin(page: Page) {

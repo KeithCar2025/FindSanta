@@ -2,6 +2,10 @@ import fs from "node:fs";
 const scenes = ["market", "resort", "workshop", "toll-plaza"];
 if (!fs.existsSync("public/home/christmas-search.png"))
   throw Error("Missing illustrated homepage: public/home/christmas-search.png");
+if (!fs.existsSync("public/home/christmas-search-portrait.png"))
+  throw Error(
+    "Missing portrait homepage: public/home/christmas-search-portrait.png",
+  );
 for (const filename of [
   "santa-master",
   "reindeer-master",

@@ -357,12 +357,18 @@ function App() {
       </div>
       {screen === "intro" && (
         <main className="home-landing">
-          <img
-            className="home-backdrop"
-            src="/home/christmas-search.png"
-            alt=""
-            onLoad={() => setHomeLoaded(true)}
-          />
+          <picture className="home-picture">
+            <source
+              media="(max-aspect-ratio: 1/1)"
+              srcSet="/home/christmas-search-portrait.png"
+            />
+            <img
+              className="home-backdrop"
+              src="/home/christmas-search.png"
+              alt=""
+              onLoad={() => setHomeLoaded(true)}
+            />
+          </picture>
           <div className={`home-content ${homeLoaded ? "art-ready" : ""}`}>
             <div className="home-title">
               <h1>OPERATION:</h1>
