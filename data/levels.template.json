@@ -1,0 +1,50 @@
+[
+  {
+    "id": "market",
+    "title": "Christmas Market",
+    "targets": [
+      "santa",
+      "reindeer",
+      "tag",
+      "dkv"
+    ],
+    "scene": "assets/scenes/market.png",
+    "estimatedMinutes": 2
+  },
+  {
+    "id": "resort",
+    "title": "Snowy Ski Resort",
+    "targets": [
+      "santa",
+      "reindeer",
+      "tag",
+      "dkv"
+    ],
+    "scene": "assets/scenes/resort.png",
+    "estimatedMinutes": 2
+  },
+  {
+    "id": "workshop",
+    "title": "North Pole Workshop",
+    "targets": [
+      "santa",
+      "reindeer",
+      "tag",
+      "dkv"
+    ],
+    "scene": "assets/scenes/workshop.png",
+    "estimatedMinutes": 2
+  },
+  {
+    "id": "toll-plaza",
+    "title": "Christmas Motorway Mayhem",
+    "targets": [
+      "santa",
+      "reindeer",
+      "tag",
+      "dkv"
+    ],
+    "scene": "assets/scenes/toll-plaza.png",
+    "estimatedMinutes": 2
+  }
+]
