@@ -1,10 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
-test("homepage preserves artwork and changes composition with screen orientation", async ({
+test("homepage fills the viewport without blurred panels at every screen size", async ({
   page,
 }) => {
   await page.goto("/");
   for (const size of [
+    { width: 3440, height: 1280 },
     { width: 1440, height: 900 },
     { width: 1366, height: 768 },
     { width: 768, height: 1024 },
@@ -27,7 +28,15 @@ test("homepage preserves artwork and changes composition with screen orientation
       width: img.naturalWidth,
       height: img.naturalHeight,
     }));
-    expect(details.fit).toBe("contain");
+    expect(details.fit).toBe("cover");
+    expect(
+      await page
+        .locator(".home-landing")
+        .evaluate((el) => getComputedStyle(el, "::before").content),
+    ).toBe("none");
+    const bounds = (await art.boundingBox())!;
+    expect(bounds.width).toBe(size.width);
+    expect(bounds.height).toBe(size.height);
     expect(
       details.src.endsWith(
         size.width <= size.height
